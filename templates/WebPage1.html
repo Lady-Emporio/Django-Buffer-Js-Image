@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h3>File </h3>
+    <image src="{{ form.question_text.value|default_if_none:"" }}" id="q1">
+        
+        {{message}}
+
+        <form method="post">
+            {% csrf_token %}
+        {{form.as_p}}
+            <button>We are</button>
+         </form>
+
+        <script>
+document.onpaste = function(event){
+var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+console.log(JSON.stringify(items)); // will give you the mime types
+for (index in items) {
+var item = items[index];
+if (item.kind === 'file') {
+var blob = item.getAsFile();
+var reader = new FileReader();
+reader.onload = function(event){
+console.log(event.target.result);
+    document.getElementById("q1").src = event.target.result;
+    document.getElementById("id_question_text").value = event.target.result;
+}; // data url!
+
+reader.readAsDataURL(blob);
+}
+}
+}
+</script>
+</body>
+</html>
